@@ -1,0 +1,9 @@
+#img-card{
+    object-fit: contain;
+    height:286px;
+ 
+}
+
+.card-body{
+    height: 196px;
+}
