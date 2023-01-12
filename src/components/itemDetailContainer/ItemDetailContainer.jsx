@@ -1,11 +1,9 @@
 import React from 'react'
-import { products } from '../fetchProducts/data'
-import { fetchProducts } from '../fetchProducts/fetchProducts'
 import ItemDetail from '../itemDetail/ItemDetail'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Loader from '../loader/Loading'
-import ItemCount from '../itemCount/ItemCount'
+import { getDoc,doc,getFirestore } from 'firebase/firestore'
 
 const ItemDetailContainer = () => {
 
@@ -13,25 +11,26 @@ const ItemDetailContainer = () => {
     const [loading, setLoading] = useState(true)
     const {id} = useParams()
 
-    useEffect(() => {
-         setLoading(true)
-        fetchProducts(products.find(listProducts => listProducts.id === parseInt(id)))
-        .then(res => {
-            setProducts(res)
-            setLoading(false)
-        
-        })
+
+
+    useEffect(() =>{
+
+      const db =getFirestore()
+      const item= doc(db, "products" ,id)
+      getDoc(item).then((snapshot) => {
+        snapshot.exists()
+          setProducts({id:snapshot.id, ...snapshot.data()})  
+      })
+      setLoading(false)
     },[id])
+
+
 
   return (
     <div>
         <div>
-              {
-                loading ? 
-                <Loader/>:
-                <ItemDetail listProducts={listProducts} />                
-              }       
-          </div> 
+              { loading ? <Loader/>: <ItemDetail listProducts={listProducts} />}      
+        </div> 
         
      </div>       
   )
