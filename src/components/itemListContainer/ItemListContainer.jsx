@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import ItemList from '../itemList/ItemList'
 import { useParams } from 'react-router-dom'
-import Loader from '../loader/Loading'
+import Loader from '../loader/Loader'
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 const ItemListContainer = () => {
 
@@ -20,8 +20,9 @@ const ItemListContainer = () => {
 
         getDocs(filterPrdoduct).then((snapshot) => {
              setProducts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+             setLoading(false)
         })
-        setLoading(false)
+        
     }, [category]);
 
 

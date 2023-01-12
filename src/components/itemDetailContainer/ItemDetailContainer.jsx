@@ -2,7 +2,7 @@ import React from 'react'
 import ItemDetail from '../itemDetail/ItemDetail'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Loader from '../loader/Loading'
+import Loader from '../loader/Loader'
 import { getDoc,doc,getFirestore } from 'firebase/firestore'
 
 const ItemDetailContainer = () => {
@@ -20,8 +20,9 @@ const ItemDetailContainer = () => {
       getDoc(item).then((snapshot) => {
         snapshot.exists()
           setProducts({id:snapshot.id, ...snapshot.data()})  
+          setLoading(false)
       })
-      setLoading(false)
+      
     },[id])
 
 
